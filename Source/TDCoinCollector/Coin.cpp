@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TDCoinCollectorGameMode.h"
 
 // Sets default values
 ACoin::ACoin()
@@ -49,6 +50,14 @@ void ACoin::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* Oth
         // Play the coin collection sound effect
         UGameplayStatics::PlaySoundAtLocation(this, CollectSound,GetActorLocation());
     }
+
+    // Gets Top Down Coin Collector Game Mode and passes the coin value to it to update the score
+    ATDCoinCollectorGameMode* TDGameMode = Cast<ATDCoinCollectorGameMode>(UGameplayStatics::GetGameMode(this));
+    if (TDGameMode)
+    {
+        TDGameMode->AddScore(CoinValue);
+    }
+
     // Destroy the coin actor
     Destroy();
 }

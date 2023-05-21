@@ -43,4 +43,7 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
         class UStaticMeshComponent* CoinMesh;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Coin Score", meta = (AllowPrivateAccess = "true"))
+        int32 CoinValue = 1;
+
 };

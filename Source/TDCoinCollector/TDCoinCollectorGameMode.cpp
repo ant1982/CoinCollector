@@ -24,3 +24,9 @@ ATDCoinCollectorGameMode::ATDCoinCollectorGameMode()
 		PlayerControllerClass = PlayerControllerBPClass.Class;
 	}
 }
+
+void ATDCoinCollectorGameMode::AddScore(int32 CoinValue)
+{
+	CoinTotal += CoinValue;
+	UE_LOG(LogTemp, Warning, TEXT("Score is: %d "), CoinTotal);
+}

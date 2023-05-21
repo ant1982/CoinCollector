@@ -13,6 +13,12 @@ class ATDCoinCollectorGameMode : public AGameModeBase
 
 public:
 	ATDCoinCollectorGameMode();
+
+	void AddScore(int32 CoinValue);
+
+private:
+
+	int32 CoinTotal;
 };
 
 
