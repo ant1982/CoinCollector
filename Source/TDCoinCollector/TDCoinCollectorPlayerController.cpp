@@ -7,11 +7,30 @@
 #include "NiagaraFunctionLibrary.h"
 #include "TDCoinCollectorCharacter.h"
 #include "Engine/World.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Blueprint/UserWidget.h"
+#include "Score.h"
+#include "Kismet/GameplayStatics.h"
+#include "MyGameInstance.h"
 
 ATDCoinCollectorPlayerController::ATDCoinCollectorPlayerController()
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
+
+	// Constructor method to get the WBP_Score that inherits from Score class
+	static ConstructorHelpers::FClassFinder<UUserWidget> GameScoreBPClass(TEXT("/Game/Widgets/WBP_Score"));
+	if (!ensure(GameScoreBPClass.Class != nullptr)) return;
+
+	GameHUDClass = GameScoreBPClass.Class;
+}
+
+void ATDCoinCollectorPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	// Loads the methods to show the score widget on screen
+	LoadScoreWidget();
 }
 
 void ATDCoinCollectorPlayerController::PlayerTick(float DeltaTime)
@@ -101,4 +120,16 @@ void ATDCoinCollectorPlayerController::OnTouchReleased(const ETouchIndex::Type F
 {
 	bIsTouch = false;
 	OnSetDestinationReleased();
+}
+
+void ATDCoinCollectorPlayerController::LoadScoreWidget()
+{
+	if (!ensure(GameHUDClass != nullptr)) return;
+
+	if (GameHUDClass)
+	{
+		UScore* ScoreWidget = Cast<UScore>(CreateWidget<UUserWidget>(this, GameHUDClass));
+
+		ScoreWidget->AddToViewport();
+	}
 }

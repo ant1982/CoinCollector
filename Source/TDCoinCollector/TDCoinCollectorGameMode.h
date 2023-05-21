@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "TDCoinCollectorGameMode.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnScoreUpdatedSignature, int32, NewScore);
+
 UCLASS(minimalapi)
 class ATDCoinCollectorGameMode : public AGameModeBase
 {
@@ -15,6 +17,13 @@ public:
 	ATDCoinCollectorGameMode();
 
 	void AddScore(int32 CoinValue);
+
+	UPROPERTY(BlueprintAssignable)
+		FOnScoreUpdatedSignature OnScoreUpdatedDelegate;
+
+protected:
+
+	void NotifyScoreUpdated();
 
 private:
 
